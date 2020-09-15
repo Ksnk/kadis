@@ -6,13 +6,6 @@
  * Time: 16:01
  */
 
-$options = [
-    'db_host' => 'localhost',
-    'db_user' => 'root',
-    'db_password' => 'root',
-    'db_base' => 'test'
-];
-
 // эпизодические косяки с настройкой на новом месте решаются вот таким нехитрым приемом
 if ('' == ini_get('date.timezone')) {
     date_default_timezone_set('UTC');
@@ -48,6 +41,7 @@ try {
     $view_class = $model->getString('view_class', '', 'view\\_404_view');
     if (!class_exists($view_class))
         throw new Exception('Неустановленное view ' . $view_class);
+    /** @var \view\body $view */
     $view = new $view_class;
 
     $model->append('debug', ob_get_contents());
