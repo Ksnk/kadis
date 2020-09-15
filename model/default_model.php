@@ -32,6 +32,12 @@ class default_model{
         $this->data[$name][$subname]=$value;
     }
 
+    function getdeep($name,$subname){
+        if(!isset($this->data[$name]))$this->data[$name]=[];
+        if(!isset($this->data[$name][$subname]))$this->data[$name][$subname]='';
+        return $this->data[$name][$subname];
+    }
+
     function append($name,$value){
         if(!isset($this->data[$name]))$this->data[$name]=[];
         $this->data[$name][]=$value;

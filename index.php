@@ -22,6 +22,8 @@ try {
     ob_start();
     // просто место для хранения всяких данных
     $model = new model\default_model();
+    $model->putdeep('sys','option',$options);
+    $model->putdeep('sys','title','Тестовое задание для kadis');
 
     // контроллер
     $controller = new controller\default_controller();

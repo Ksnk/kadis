@@ -27,7 +27,7 @@ class search_picture_model extends search_model{
         for ($i = 0; $i < $hrefs->length; $i++) {
             $href = $hrefs->item($i);
             $url = $href->getAttribute('src');
-            if(preg_match('/'.preg_quote($text).'/',$url))
+            if(preg_match('/'.preg_quote($text,'/').'/',$url))
                 $result['count']++;
         }
         $this->putdeep('result','count',$result['count']);
