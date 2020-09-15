@@ -6,7 +6,7 @@
  * Time: 16:01
  */
 
-// эпизодические косяки с настройкой на новом месте решаются вот таким нехитрым приемом
+// эпизодические косяки с настройкой времени на новом месте решаются вот таким нехитрым приемом
 if ('' == ini_get('date.timezone')) {
     date_default_timezone_set('UTC');
 }
@@ -21,7 +21,7 @@ try {
     ob_start();
     // просто место для хранения всяких данных
     $model = new model\default_model();
-    $model->store('option', include "config.php");
+    $model->store('option', include __DIR__."/config.php");
 
     // контроллер
     $controller = new controller\default_controller();
@@ -38,7 +38,7 @@ try {
     }
     $model->data_prepare(); // чтение нужных данных
 
-    $view_class = $model->getString('view_class', '', 'view\\_404_view');
+    $view_class = $model->load('view_class', '', 'view\\_404_view');
     if (!class_exists($view_class))
         throw new Exception('Неустановленное view ' . $view_class);
     /** @var \view\body $view */
