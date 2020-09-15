@@ -5,12 +5,17 @@
  * Date: 14.09.2020
  * Time: 16:04
  */
+
 namespace controller;
 
-class default_controller implements controller_interface{
+use \model\default_model;
 
-    function route($model){
-        if (false &&  PHP_SAPI === 'cli'){
+class default_controller implements controller_interface
+{
+
+    function route(default_model $model)
+    {
+        if (false && PHP_SAPI === 'cli') {
             return $this->cli_route($model);
         } else {
             return $this->web_route($model);
@@ -19,62 +24,76 @@ class default_controller implements controller_interface{
 
     /**
      * роут для случая cli-приложения
-     * return array - {controller:{}, model:{}, view:{}}
+     * @param default_model $model
      */
-    final function cli_route($model){
-        $model->put('view_class','view\\echo_view');
-        $model->append('echo','не поддерживается, пользуйтесь web');
+    final function cli_route(default_model $model)
+    {
+        $model->store('view_class', 'view\\echo_view');
+        $model->append('echo', 'не поддерживается, пользуйтесь web');
     }
 
     /**
      * роут для случая обычного web-приложения
+     * @param default_model $model
      */
-    final function web_route($model){
-        if($_SERVER['REQUEST_METHOD']=='POST'){// это ajax и все. дальше пусть проверяет он сам
-            return $this->ajax_route($model);
+    final function web_route(default_model $model)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {// это ajax и все. дальше пусть проверяет он сам
+            $this->ajax_route($model);
+        } else if (preg_match('~/history\b~', $_SERVER['REQUEST_URI'])) {// это страница истории поиска
+            $this->history_page_route($model);
+        } else if (preg_match('~/($|\?)~', $_SERVER['REQUEST_URI'])) {// это страница истории поиска
+            $this->get_search_form($model);
+        } else {
+            $model->store('view_class', 'view\\_404_view');
         }
-        if(preg_match('~/history\b~',$_SERVER['REQUEST_URI'])){// это страница истории поиска
-            return $this->history_page_route($model);
-        }
-        if(preg_match('~/($|\?)~',$_SERVER['REQUEST_URI'])){// это страница истории поиска
-            return $this->get_search_form($model);
-        }
-        $model->put('view_class','view\\_404_view');
     }
 
-    final function get_search_form($model){
+    /**
+     * @param default_model $model
+     */
+    final function get_search_form(default_model $model)
+    {
         //$model->put('model_class','model\\history_model');
-        $model->append('subtitle','Выбирайте варианты поиска');
-        $model->put('view_class','view\\search_view');
+        $model->store('subtitle', 'Выбирайте варианты поиска');
+        $model->store('view_class', 'view\\search_view');
     }
 
-    final function ajax_route($model){
-        if(isset($_POST['variant'])){
-            switch($_POST['variant']){
+    /**
+     * @param default_model $model
+     */
+    final function ajax_route(default_model $model)
+    {
+        if (isset($_POST['variant'])) {
+            switch ($_POST['variant']) {
                 case 'words':
-                    $model->append('subtitle','Поиск по словам');
-                    $model->put('model_class','model\\search_words_model');
+                    $model->store('subtitle', 'Поиск по словам');
+                    $model->store('model_class', 'model\\search_words_model');
                     break;
                 case 'link':
-                    $model->append('subtitle','Поиск по ссылкам');
-                    $model->put('model_class','model\\search_links_model');
+                    $model->store('subtitle', 'Поиск по ссылкам');
+                    $model->store('model_class', 'model\\search_links_model');
                     break;
                 case 'picture':
-                    $model->append('subtitle','Поиск по картинкам');
-                    $model->put('model_class','model\\search_picture_model');
+                    $model->store('subtitle', 'Поиск по картинкам');
+                    $model->store('model_class', 'model\\search_picture_model');
                     break;
             }
         }
-        if(isset($_POST['uri']))
-            $model->put('uri',$_POST['uri']);
-        if(isset($_POST['text']))
-            $model->put('text',$_POST['text']);
-        $model->put('view_class','view\\ajax_view');
+        if (isset($_POST['uri']))
+            $model->store('uri', $_POST['uri']);
+        if (isset($_POST['text']))
+            $model->store('text', $_POST['text']);
+        $model->store('view_class', 'view\\ajax_view');
     }
 
-    function history_page_route($model){
+    /**
+     * @param default_model $model
+     */
+    function history_page_route(default_model $model)
+    {
         //$model->put('model_class','model\\history_model');
-        $model->put('view_class','view\\history_view');
+        $model->store('view_class', 'view\\history_view');
     }
 
 }

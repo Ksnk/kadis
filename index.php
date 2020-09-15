@@ -6,28 +6,29 @@
  * Time: 16:01
  */
 
-$options=[
-    'db_host'=>'localhost',
-    'db_user'=>'root',
-    'db_password'=>'root',
-    'db_base'=>'test'
+$options = [
+    'db_host' => 'localhost',
+    'db_user' => 'root',
+    'db_password' => 'root',
+    'db_base' => 'test'
 ];
 
+// эпизодические косяки с настройкой на новом месте решаются вот таким нехитрым приемом
 if ('' == ini_get('date.timezone')) {
     date_default_timezone_set('UTC');
 }
+
 // автолод какой уж есть, чо...
-spl_autoload_register(function($class) {
-    $fn=strtolower(str_replace('\\', '/',__DIR__ . '/' .  $class . '.php'));
-    if(file_exists($fn))require_once $fn;
+spl_autoload_register(function ($class) {
+    $fn = strtolower(str_replace('\\', '/', __DIR__ . '/' . $class . '.php'));
+    if (file_exists($fn)) require_once $fn;
 });
 
 try {
     ob_start();
     // просто место для хранения всяких данных
     $model = new model\default_model();
-    $model->putdeep('option','',$options);
-    $model->putdeep('sys','title','Тестовое задание для kadis');
+    $model->store('option', include "config.php");
 
     // контроллер
     $controller = new controller\default_controller();
@@ -37,21 +38,21 @@ try {
 
     // подмена модели на реально заказанную
     $model_class = $model->getString('model_class');
-    if(!empty($model_class)){
-        if(!class_exists($model_class))
-            throw new Exception('Неустановленная модель '.$model_class);
-        $model = new $model_class($model);
+    if (!empty($model_class)) {
+        if (!class_exists($model_class))
+            throw new Exception('Неустановленная модель ' . $model_class);
+        $model = new $model_class();
     }
     $model->data_prepare(); // чтение нужных данных
 
-    $view_class = $model->getString('view_class','','view\\_404_view');
-    if(!class_exists($view_class))
-        throw new Exception('Неустановленное view '.$view_class);
+    $view_class = $model->getString('view_class', '', 'view\\_404_view');
+    if (!class_exists($view_class))
+        throw new Exception('Неустановленное view ' . $view_class);
     $view = new $view_class;
 
-    $model->append('debug',ob_get_contents());
+    $model->append('debug', ob_get_contents());
     ob_end_clean();
     $view->print($model);
-} catch(Exception $e){
-    echo 'something terrible happen :'. $e->getMessage();
+} catch (Exception $e) {
+    echo 'something terrible happen :' . $e->getMessage();
 }

@@ -15,10 +15,11 @@ class body implements view_interface {
     }
 
     function header(\model\default_model $model){
-        $headers=$model->get('header');
-        foreach($headers as $header){
-            header($header);
-        }
+        $headers=$model->load('header');
+        if(!empty($headers))
+            foreach($headers as $header){
+                header($header);
+            }
     }
 
     function print(\model\default_model $model){
@@ -30,7 +31,7 @@ class body implements view_interface {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>'.$model->getdeep('sys','title').'</title>
+    <title>'.$model->load(['option','title'], 'Приложение').'</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">

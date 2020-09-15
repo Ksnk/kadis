@@ -5,65 +5,86 @@
  * Date: 14.09.2020
  * Time: 16:04
  */
+
 namespace model;
 
 /**
  * прародитель всех моделей системы. Позволяет хранить в себе данные
- * Интерфейсные функции корявы и требуют переосмысления
+ * Интерфейсные функции корявы, но уже один раз переосмыслены
  * Class default_model
  * @package model
  */
-class default_model{
+class default_model
+{
 
     /**
-     * Хранилище данных. Одно на все приложение
-     * @var array
+     * Хранилище данных. Одно на все приложение.
      */
-    protected static $data=[];
+    protected static $data = [];
 
-    function __construct($data=null)
+    /**
+     * Работа с сылками в php. По имени найти куда брать-ложить значение.
+     * @param $name
+     * @return array|mixed
+     */
+    private function &root($name)
     {
-        if(is_array($data)){
-            self::$data=array_merge(self::$data,$data);
+        $bar =& self::$data;
+        if (is_array($name) && !empty($name)) {
+            while (count($name) > 1) {
+                $n = array_shift($name);
+                if (!isset($bar[$n])) $bar[$n] = [];
+                $bar =& $bar[$n];
+            }
+            $name = array_shift($name);
         }
-    }
-
-    function put($name,$value){
-        self::$data[$name]=[];
-        self::$data[$name][]=$value;
-    }
-
-    function putdeep($name,$subname,$value){
-        if(!isset(self::$data[$name]))self::$data[$name]=[];
-        if(empty($subname))
-            self::$data[$name]=$value;
+        if (empty($name))
+            return $bar;
         else
-            self::$data[$name][$subname]=$value;
+            return $bar[$name];
     }
 
-    function getdeep($name,$subname){
-        if(!isset(self::$data[$name]))self::$data[$name]=[];
-        if(!isset(self::$data[$name][$subname]))self::$data[$name][$subname]='';
-        return self::$data[$name][$subname];
+    /**
+     * заменить значение в хранилище новым значением
+     * @param string|array $name
+     * @param $value
+     */
+    function store($name, $value)
+    {
+        $root =& $this->root($name);
+        $root = $value;
     }
 
-    function append($name,$value){
-        if(!isset(self::$data[$name]))self::$data[$name]=[];
-        self::$data[$name][]=$value;
+    /**
+     * получить значение
+     * @param string|array $name
+     * @return array|mixed
+     */
+    function load($name)
+    {
+        $root =& $this->root($name);
+        return $root;
     }
 
-    function get($name){
-        if(!isset(self::$data[$name]))self::$data[$name]=[];
-        return self::$data[$name];
+    function append($name, $value)
+    {
+        $root =& $this->root($name);
+        $root[] = $value;
     }
 
-    function getString($name,$glue='',$default=''){
-        if(!isset(self::$data[$name]))self::$data[$name]=[];
-        $data=implode($glue,self::$data[$name]);
-        return empty($data)?$default:$data;
+    function getString($name, $glue = '', $default = '')
+    {
+        $root =& $this->root($name);
+        if (is_array($root)) {
+            $data = implode($glue, $root);
+        } else {// is_string ? верю на слово...
+            $data = $root;
+        }
+        return empty($data) ? $default : $data;
     }
 
-    function data_prepare(){
+    function data_prepare()
+    {
 
     }
 

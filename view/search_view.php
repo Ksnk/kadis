@@ -12,7 +12,7 @@ class search_view extends body {
 
     function print(\model\default_model $model){
 
-        $model->put('echo',  '
+        $model->append('echo',  '
         <div class="container bs-docs-container"> 
             <ul class="nav nav-pills">
   <li class="disabled" ><a href="/">Главная</a></li>

@@ -14,14 +14,14 @@ class database_model extends default_model {
      * @return PDO
      */
     protected function dbh(){
-        $dbh=$this->getdeep('sys','pdo_dbh');
+        $dbh=$this->load(['sys','pdo_dbh']);
         if(empty($dbh)){
             $dbh = new PDO(
-                sprintf('mysql:host=%s;dbname=%s',$this->getdeep('option','db_host'),$this->getdeep('option','db_base')),
-                $this->getdeep('option','db_user'),
-                $this->getdeep('option','db_password')
+                sprintf('mysql:host=%s;dbname=%s',$this->load(['option','db_host']),$this->load(['option','db_base'])),
+                $this->load(['option','db_user']),
+                $this->load(['option','db_password'])
             );
-            $this->putdeep('sys','pdo_dbh',$dbh);
+            $this->store(['sys','pdo_dbh'],$dbh);
         }
         return $dbh;
     }

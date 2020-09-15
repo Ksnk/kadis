@@ -18,7 +18,8 @@ CREATE TABLE `search_result` (
   `id` int(11) NOT NULL,
   `uri` varchar(200) NOT NULL,
   `disp` int(11) NOT NULL,
-  `foundtext` text NOT NULL
+  `foundtext` text NOT NULL,
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

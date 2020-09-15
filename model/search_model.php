@@ -19,7 +19,7 @@ class search_model extends default_model{
                 $contents=file_get_contents($uri);
                 $db->cache_put('uri://'.$uri,$contents);
             }
-            $this->putdeep('result','content',$contents);
+            $this->store(['result','content'],$contents);
         }
     }
 }

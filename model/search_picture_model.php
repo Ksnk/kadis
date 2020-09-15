@@ -13,7 +13,7 @@ class search_picture_model extends search_model{
     function data_prepare(){
         parent::data_prepare();
         $text=$this->getString('text');
-        $result=$this->get('result');
+        $result=$this->load('result');
 
         $dom = new \DOMDocument();
         @$dom->loadHTML($result['content']);
@@ -35,7 +35,7 @@ class search_picture_model extends search_model{
         }
         $db=new database_model();
         $db->storeresult($text,$this->getString('uri'),$this->getString('subtitle'),$result['found']);
-        $this->putdeep('result','',$result);
+        $this->store('result',$result);
     }
 }
 

@@ -5,19 +5,21 @@
  * Date: 14.09.2020
  * Time: 16:40
  */
+
 namespace controller;
 
+use \model\default_model;
+
 // не знаю зачем, но пусть будет
-interface controller_interface{
+interface controller_interface
+{
 
     /**
-     * возвращает структуру вида
-     * {controller:'', model:'', view:'', data:''}
-     * Каждое поле может отсутствовать, поля - имена существующих классов, data - просто data,
-     * его использует мшуц естественным для него способом
+     * меняет параметры обшего пула данных.
+     * model_class, view_class - устанавливает нужные имена классов
      *
-     * @return mixed
+     * @param default_model $model
      */
-    function route($model);
+    function route(default_model $model);
 
 }

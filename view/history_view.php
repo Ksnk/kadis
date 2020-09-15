@@ -30,7 +30,7 @@ class history_view extends body {
             $list.='</tbody></table>';
         }
 
-        $model->put('echo',  '
+        $model->append('echo',  '
         <div class="container bs-docs-container"> 
     <div class="row">
     <ul class="nav nav-pills">
