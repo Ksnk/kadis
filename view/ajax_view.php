@@ -20,8 +20,12 @@ class ajax_view extends body {
         $result = $model->get('result');
         if(empty($result['count'])) $model->append('echo','Ничего не найдено');
         else  $model->append('echo',sprintf('Найдено %s вариантов', $result['count']));
+        if(!empty($result['found'])){
+            foreach($result['found'] as $found)
+                $model->append('echo', sprintf('<br>-  %s ', $found));
+        }
 
-        $contents = utf8_encode(json_encode(['resume'=>$model->getString('echo'),'result'=>$result]));
+        $contents = utf8_encode(json_encode(['resume'=>$model->getString('echo'),'debug'=>$model->getString('debug'),'result'=>$result]));
         $callback=$_GET['callback']??'log';
         if('iframe'==$_GET['target']){
             echo '<script type="text/javascript"> top.'.$callback . '('.$contents.')</script>';

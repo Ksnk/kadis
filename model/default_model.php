@@ -9,53 +9,57 @@ namespace model;
 
 /**
  * прародитель всех моделей системы. Позволяет хранить в себе данные
+ * Интерфейсные функции корявы и требуют переосмысления
  * Class default_model
  * @package model
  */
 class default_model{
 
-    var $data=[];
+    /**
+     * Хранилище данных. Одно на все приложение
+     * @var array
+     */
+    protected static $data=[];
 
     function __construct($data=null)
     {
-        if(is_array($data))
-            $this->data=$data;
-        else if(is_subclass_of($data,__CLASS__) || __CLASS__==get_class($data)){
-            $this->data=$data->data;
-        } else if(!is_null($data)){
-            throw new \Exception('Некорректные данные '.__CLASS__.' vs '.get_class($data));
+        if(is_array($data)){
+            self::$data=array_merge(self::$data,$data);
         }
     }
 
     function put($name,$value){
-        $this->data[$name]=[];
-        $this->data[$name][]=$value;
+        self::$data[$name]=[];
+        self::$data[$name][]=$value;
     }
 
     function putdeep($name,$subname,$value){
-        if(!isset($this->data[$name]))$this->data[$name]=[];
-        $this->data[$name][$subname]=$value;
+        if(!isset(self::$data[$name]))self::$data[$name]=[];
+        if(empty($subname))
+            self::$data[$name]=$value;
+        else
+            self::$data[$name][$subname]=$value;
     }
 
     function getdeep($name,$subname){
-        if(!isset($this->data[$name]))$this->data[$name]=[];
-        if(!isset($this->data[$name][$subname]))$this->data[$name][$subname]='';
-        return $this->data[$name][$subname];
+        if(!isset(self::$data[$name]))self::$data[$name]=[];
+        if(!isset(self::$data[$name][$subname]))self::$data[$name][$subname]='';
+        return self::$data[$name][$subname];
     }
 
     function append($name,$value){
-        if(!isset($this->data[$name]))$this->data[$name]=[];
-        $this->data[$name][]=$value;
+        if(!isset(self::$data[$name]))self::$data[$name]=[];
+        self::$data[$name][]=$value;
     }
 
     function get($name){
-        if(!isset($this->data[$name]))$this->data[$name]=[];
-        return $this->data[$name];
+        if(!isset(self::$data[$name]))self::$data[$name]=[];
+        return self::$data[$name];
     }
 
     function getString($name,$glue='',$default=''){
-        if(!isset($this->data[$name]))$this->data[$name]=[];
-        $data=implode($glue,$this->data[$name]);
+        if(!isset(self::$data[$name]))self::$data[$name]=[];
+        $data=implode($glue,self::$data[$name]);
         return empty($data)?$default:$data;
     }
 

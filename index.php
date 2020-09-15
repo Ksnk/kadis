@@ -7,11 +7,15 @@
  */
 
 $options=[
-    'db_host'=>'locahost',
+    'db_host'=>'localhost',
     'db_user'=>'root',
-    'db_pasword'=>'admin'
+    'db_password'=>'root',
+    'db_base'=>'test'
 ];
 
+if ('' == ini_get('date.timezone')) {
+    date_default_timezone_set('UTC');
+}
 // автолод какой уж есть, чо...
 spl_autoload_register(function($class) {
     $fn=strtolower(str_replace('\\', '/',__DIR__ . '/' .  $class . '.php'));
@@ -22,7 +26,7 @@ try {
     ob_start();
     // просто место для хранения всяких данных
     $model = new model\default_model();
-    $model->putdeep('sys','option',$options);
+    $model->putdeep('option','',$options);
     $model->putdeep('sys','title','Тестовое задание для kadis');
 
     // контроллер
