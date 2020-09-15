@@ -7,6 +7,11 @@
  */
 namespace model;
 
+/**
+ * прародитель всех моделей системы. Позволяет хранить в себе данные
+ * Class default_model
+ * @package model
+ */
 class default_model{
 
     var $data=[];

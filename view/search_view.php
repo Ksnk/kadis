@@ -14,6 +14,11 @@ class search_view extends body {
 
         $model->put('echo',  '
         <div class="container bs-docs-container"> 
+            <ul class="nav nav-pills">
+  <li class="disabled" ><a href="/">Главная</a></li>
+  <li><a href="/history/">История поиска</a></li>
+</ul>
+
     <div class="row">
 <div class="col-sm-8 col-lg-8 col-8" style="overflow:auto;">
     <iframe name="cexecution" id="cexecution" style="display:none"></iframe>
