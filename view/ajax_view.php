@@ -19,7 +19,7 @@ class ajax_view extends body {
 
         $result = $model->get('result');
         if(empty($result['count'])) $model->append('echo','Ничего не найдено');
-        else  $model->append('echo',sprintf('Найдено %s вариантов', $result['count']));
+        else  $model->append('echo',sprintf('Найден%s %s вариант%s', $this->plural($result['count'],'|о|о'),$result['count'], $this->plural($result['count'],'|а|ов')));
         if(!empty($result['found'])){
             foreach($result['found'] as $found)
                 $model->append('echo', sprintf('<br>-  %s ', $found));

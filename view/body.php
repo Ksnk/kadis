@@ -4,6 +4,16 @@ namespace view;
 
 class body implements view_interface {
 
+    function plural($n, $suf = '')
+    {
+        list($one, $two, $five, $trash) = explode('|', $suf . '|||', 4);
+        if ($n < 20 && $n > 9) return $five;
+        $n = $n % 10;
+        if ($n == 1) return $one;
+        if ($n < 5 && $n > 1) return $two;
+        return $five;
+    }
+
     function header(\model\default_model $model){
         $headers=$model->get('header');
         foreach($headers as $header){
