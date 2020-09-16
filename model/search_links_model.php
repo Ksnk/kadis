@@ -12,8 +12,8 @@ class search_links_model extends search_model{
     // ищем все полные строки
     function data_prepare(){
         parent::data_prepare();
-        $text=$this->getString('text');
-        $result=$this->load('result');
+        $text=$this->get_data_as_string('text');
+        $result=$this->get_data('result');
 
         $dom = new \DOMDocument();
         @$dom->loadHTML($result['content']);
@@ -34,8 +34,8 @@ class search_links_model extends search_model{
             }
         }
         $db=new database_model();
-        $db->storeresult($text,$this->getString('uri'),$this->getString('subtitle'),$result['found']);
-        $this->store('result',$result);
+        $db->storeresult($text,$this->get_data_as_string('uri'),$this->get_data_as_string('subtitle'),$result['found']);
+        $this->put_data('result',$result);
     }
 }
 

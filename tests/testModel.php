@@ -26,8 +26,8 @@ class testModel extends PHPUnit_Framework_TestCase
     {
         $testarray=[1,2,3,4,5,6,7,8,9];
         $model=new  \model\default_model();
-        $model->store([],$testarray);
-        $newtest= $model->load([]);
+        $model->put_data([],$testarray);
+        $newtest= $model->get_data([]);
         $this->assertEquals($testarray,$newtest);
     }
 
@@ -35,16 +35,16 @@ class testModel extends PHPUnit_Framework_TestCase
     {
         $testarray=[1,2,3,4,5,6,7,8,9];
         $model=new  \model\default_model();
-        $model->store('one',$testarray);
-        $newtest= $model->load('one');
+        $model->put_data('one',$testarray);
+        $newtest= $model->get_data('one');
         $this->assertEquals($testarray,$newtest);
     }
 
     function testClear()
     {
         $model=new  \model\default_model();
-        $model->store([],[]);
-        $newtest= $model->load([]);
+        $model->put_data([],[]);
+        $newtest= $model->get_data([]);
         $this->assertEquals([],$newtest);
     }
 }

@@ -16,7 +16,7 @@ namespace view;
 class echo_view extends body {
 
     function print(\model\default_model $model){
-        echo $model->getString('echo');
+        echo $model->get_data_as_string('echo');
     }
 
 }

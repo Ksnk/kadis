@@ -12,7 +12,7 @@ class search_view extends body {
 
     function print(\model\default_model $model){
 
-        $model->append('echo',  '
+        $model->append_data('echo',  '
         <div class="container bs-docs-container"> 
             <ul class="nav nav-pills">
   <li class="disabled" ><a href="/">Главная</a></li>
@@ -24,7 +24,7 @@ class search_view extends body {
     <iframe name="cexecution" id="cexecution" style="display:none"></iframe>
     <form action="?callback=log&target=iframe" target ="cexecution" method="POST">
     <div class="panel panel-primary"> <div class="panel-heading">
-    <h3 class="input-group-addon" style="color: white;background: none;border: none;">'.$model->getString('subtitle','','xxx').'</h3></div>
+    <h3 class="input-group-addon" style="color: white;background: none;border: none;">'.$model->get_data_as_string('subtitle','','xxx').'</h3></div>
     <div class="panel-body">
     <div class="row">
     <label class="control_label col-xs-4 control-label">варианты :</label><div class="col-xs-8">

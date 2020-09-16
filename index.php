@@ -21,7 +21,7 @@ try {
     ob_start();
     // просто место для хранения всяких данных
     $model = new model\default_model();
-    $model->store('option', include __DIR__."/config.php");
+    $model->put_data('option', include __DIR__."/config.php");
 
     // контроллер
     $controller = new controller\default_controller();
@@ -30,7 +30,7 @@ try {
     $controller->route($model);
 
     // подмена модели на реально заказанную
-    $model_class = $model->getString('model_class');
+    $model_class = $model->get_data_as_string('model_class');
     if (!empty($model_class)) {
         if (!class_exists($model_class))
             throw new Exception('Неустановленная модель ' . $model_class);
@@ -38,13 +38,13 @@ try {
     }
     $model->data_prepare(); // чтение нужных данных
 
-    $view_class = $model->getString('view_class', '', 'view\\_404_view');
+    $view_class = $model->get_data_as_string('view_class', '', 'view\\_404_view');
     if (!class_exists($view_class))
         throw new Exception('Неустановленное view ' . $view_class);
     /** @var \view\body $view */
     $view = new $view_class;
 
-    $model->append('debug', ob_get_contents());
+    $model->append_data('debug', ob_get_contents());
     ob_end_clean();
     $view->print($model);
 } catch (Exception $e) {

@@ -10,7 +10,7 @@ namespace model;
 class search_model extends default_model{
 
     function data_prepare(){
-        $uri=$this->getString('uri');
+        $uri=$this->get_data_as_string('uri');
         if(!empty($uri)){
             $db=new database_model();
             if($cache=$db->cache('uri://'.$uri)){
@@ -19,7 +19,7 @@ class search_model extends default_model{
                 $contents=file_get_contents($uri);
                 $db->cache_put('uri://'.$uri,$contents);
             }
-            $this->store(['result','content'],$contents);
+            $this->put_data(['result','content'],$contents);
         }
     }
 }

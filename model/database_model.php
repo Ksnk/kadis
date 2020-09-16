@@ -20,14 +20,14 @@ class database_model extends default_model
      */
     protected function dbh()
     {
-        $dbh = $this->load(['sys', 'pdo_dbh']);
+        $dbh = $this->get_data(['sys', 'pdo_dbh']);
         if (empty($dbh)) {
             $dbh = new PDO(
-                sprintf('mysql:host=%s;dbname=%s', $this->load(['option', 'db_host']), $this->load(['option', 'db_base'])),
-                $this->load(['option', 'db_user']),
-                $this->load(['option', 'db_password'])
+                sprintf('mysql:host=%s;dbname=%s', $this->get_data(['option', 'db_host']), $this->get_data(['option', 'db_base'])),
+                $this->get_data(['option', 'db_user']),
+                $this->get_data(['option', 'db_password'])
             );
-            $this->store(['sys', 'pdo_dbh'], $dbh);
+            $this->put_data(['sys', 'pdo_dbh'], $dbh);
         }
         return $dbh;
     }

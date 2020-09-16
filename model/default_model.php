@@ -49,7 +49,7 @@ class default_model
      * @param string|array $name
      * @param $value
      */
-    function store($name, $value)
+    function put_data($name, $value)
     {
         $root =& $this->root($name);
         $root = $value;
@@ -60,19 +60,19 @@ class default_model
      * @param string|array $name
      * @return array|mixed
      */
-    function load($name)
+    function get_data($name)
     {
         $root =& $this->root($name);
         return $root;
     }
 
-    function append($name, $value)
+    function append_data($name, $value)
     {
         $root =& $this->root($name);
         $root[] = $value;
     }
 
-    function getString($name, $glue = '', $default = '')
+    function get_data_as_string($name, $glue = '', $default = '')
     {
         $root =& $this->root($name);
         if (is_array($root)) {

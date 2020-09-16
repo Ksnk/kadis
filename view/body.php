@@ -15,7 +15,7 @@ class body implements view_interface {
     }
 
     function header(\model\default_model $model){
-        $headers=$model->load('header');
+        $headers=$model->get_data('header');
         if(!empty($headers))
             foreach($headers as $header){
                 header($header);
@@ -31,7 +31,7 @@ class body implements view_interface {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>'.$model->load(['option','title'], 'Приложение').'</title>
+    <title>'.$model->get_data(['option','title'], 'Приложение').'</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -51,8 +51,8 @@ class body implements view_interface {
     </head>
 <body>
 '
-            .$model->getString('echo',' ','!oops!')
-            .'<div class="debug">'.$model->getString('debug').'</div>'
+            .$model->get_data_as_string('echo',' ','!oops!')
+            .'<div class="debug">'.$model->get_data_as_string('debug').'</div>'
             .'<script type="text/javascript">
     function log(obj){
         console.log(obj);
