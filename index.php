@@ -38,7 +38,7 @@ try {
     }
     $model->data_prepare(); // чтение нужных данных
 
-    $view_class = $model->load('view_class', '', 'view\\_404_view');
+    $view_class = $model->getString('view_class', '', 'view\\_404_view');
     if (!class_exists($view_class))
         throw new Exception('Неустановленное view ' . $view_class);
     /** @var \view\body $view */
